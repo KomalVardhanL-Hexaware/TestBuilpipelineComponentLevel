@@ -1,4 +1,4 @@
-name: BugFix
+name: dscv
 'on':
   push:
     branches:
@@ -10,8 +10,8 @@ env:
   DOCKER_FILE_PATH: ./dotnet/Dockerfile.publish
   DOCKER_BUILD_CONTEXT: dotnet
   DOCKER_PUBLISH_CONTEXT: ./publish
-  CONTAINER_NAME: test
-  REPOSITORY_NAME: test
+  CONTAINER_NAME: bugfix
+  REPOSITORY_NAME: bugfix
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
