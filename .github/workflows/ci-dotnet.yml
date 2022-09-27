@@ -1,4 +1,4 @@
-name: dscv
+name: test
 'on':
   push:
     branches:
@@ -10,8 +10,8 @@ env:
   DOCKER_FILE_PATH: ./dotnet/Dockerfile.publish
   DOCKER_BUILD_CONTEXT: dotnet
   DOCKER_PUBLISH_CONTEXT: ./publish
-  CONTAINER_NAME: bugfix
-  REPOSITORY_NAME: bugfix
+  CONTAINER_NAME: test
+  REPOSITORY_NAME: test
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
@@ -25,9 +25,9 @@ jobs:
           username: ${{ secrets.CR_USERNAME }}
           password: ${{ secrets.CR_PASSWORD }}
       - name: Build and Test
-        run: docker build ${{ env.DOCKER_BUILD_CONTEXT }} -f ${{ env.DOCKER_BUILD_FILE_PATH }} -t ${{ secrets.CR_LOGIN_SERVER }}/${{ env.REPOSITORY_NAME }}:BugFix
+        run: docker build ${{ env.DOCKER_BUILD_CONTEXT }} -f ${{ env.DOCKER_BUILD_FILE_PATH }} -t ${{ secrets.CR_LOGIN_SERVER }}/${{ env.REPOSITORY_NAME }}:test
       - name: Runs docker
-        run: docker run --name ${{ env.CONTAINER_NAME }} -d ${{ secrets.CR_LOGIN_SERVER }}/${{ env.REPOSITORY_NAME }}:BugFix
+        run: docker run --name ${{ env.CONTAINER_NAME }} -d ${{ secrets.CR_LOGIN_SERVER }}/${{ env.REPOSITORY_NAME }}:test
       - name: copy build files
         run: |-
           docker cp ${{ env.CONTAINER_NAME }}:/app/publish/ ./
@@ -41,5 +41,5 @@ jobs:
           reporter: dotnet-trx
       - name: Build and  push image to container registry
         run: |-
-          docker build ${{ env.DOCKER_PUBLISH_CONTEXT }} -f ${{ env.DOCKER_FILE_PATH }} -t ${{ secrets.CR_LOGIN_SERVER }}/${{ env.REPOSITORY_NAME }}:BugFix
-          docker push ${{ secrets.CR_LOGIN_SERVER }}/${{ env.REPOSITORY_NAME }}:BugFix
+          docker build ${{ env.DOCKER_PUBLISH_CONTEXT }} -f ${{ env.DOCKER_FILE_PATH }} -t ${{ secrets.CR_LOGIN_SERVER }}/${{ env.REPOSITORY_NAME }}:test
+          docker push ${{ secrets.CR_LOGIN_SERVER }}/${{ env.REPOSITORY_NAME }}:test
